@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Calculate player profit and cause impact for Playing for Good games." />
+  <title>Playing Profit Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <section class="calculator-card" aria-labelledby="calculator-title">
+      <div class="top-bar">
+        <p class="eyebrow">Playing for Good</p>
+        <div class="language-toggle" role="group" aria-label="Language">
+          <button type="button" class="language-button active" data-language="en" aria-pressed="true">English</button>
+          <button type="button" class="language-button" data-language="fr" aria-pressed="false">Français</button>
+        </div>
+      </div>
+
+      <header>
+        <h1 id="calculator-title" data-i18n="title">Playing Profit Calculator</h1>
+        <p class="intro" data-i18n="intro">Calculate your net result, prize income, personal contributions to causes, and the total amount generated for causes by all players.</p>
+      </header>
+
+      <form id="profit-form" novalidate>
+        <fieldset>
+          <legend data-i18n="gameInfoLegend">Game information</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label for="price-per-player" data-i18n="priceLabel">Price paid per player, per game</label>
+              <div class="money-input">
+                <span aria-hidden="true">$</span>
+                <input id="price-per-player" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="10.00" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="players-per-game" data-i18n="playersLabel">Players participating per game</label>
+              <input id="players-per-game" type="number" min="2" step="1" inputmode="numeric" placeholder="8" required />
+            </div>
+            <div class="field">
+              <label for="games-played" data-i18n="gamesPlayedLabel">Total games played</label>
+              <input id="games-played" type="number" min="1" step="1" inputmode="numeric" placeholder="5" required />
+            </div>
+            <div class="field">
+              <label for="games-won" data-i18n="gamesWonLabel">Games won</label>
+              <input id="games-won" type="number" min="0" step="1" inputmode="numeric" value="0" required />
+            </div>
+            <div class="field">
+              <label for="games-lost" data-i18n="gamesLostLabel">Games lost</label>
+              <input id="games-lost" type="number" min="0" step="1" inputmode="numeric" value="0" required />
+            </div>
+          </div>
+          <p class="split-note" data-i18n="splitNote">Each game pool is split 50% to the player prize and 50% to the cause.</p>
+        </fieldset>
+
+        <fieldset>
+          <div class="legend-row">
+            <legend data-i18n="causesLegend">Causes supported</legend>
+            <button type="button" id="add-cause" class="secondary-button" data-i18n="addCauseButton">Add another cause</button>
+          </div>
+          <p class="section-help" data-i18n="causesHelp">Enter each cause and the number of games played for it. The cause totals must equal the total games played.</p>
+          <div id="causes-list" class="causes-list"></div>
+        </fieldset>
+
+        <button type="submit" class="primary-button" data-i18n="calculateButton">Calculate profit and impact</button>
+        <p id="form-error" class="error" role="alert" hidden></p>
+      </form>
+
+      <section id="results" class="results" aria-live="polite" hidden>
+        <h2 data-i18n="resultsTitle">Your results</h2>
+        <div class="result-grid">
+          <article class="result-card"><span data-i18n="totalPaidResult">Total amount paid</span><strong id="total-paid">$0.00</strong></article>
+          <article class="result-card"><span data-i18n="prizeIncomeResult">Prize income received</span><strong id="prize-income">$0.00</strong></article>
+          <article class="result-card featured" id="net-card"><span data-i18n="netResult">Net profit or loss</span><strong id="net-result">$0.00</strong><small id="net-status"></small></article>
+          <article class="result-card"><span data-i18n="winRateResult">Win rate</span><strong id="win-rate">0%</strong></article>
+        </div>
+
+        <h2 data-i18n="causeImpactTitle">Cause impact</h2>
+        <div class="result-grid">
+          <article class="result-card cause"><span data-i18n="personalContributionResult">Your personal contribution to causes</span><strong id="personal-cause-total">$0.00</strong><small data-i18n="personalContributionHelp">Half of your own entry payments</small></article>
+          <article class="result-card cause"><span data-i18n="allPlayersContributionResult">Total generated for causes by all players</span><strong id="all-players-cause-total">$0.00</strong><small data-i18n="allPlayersContributionHelp">Half of all game pools</small></article>
+        </div>
+
+        <h2 data-i18n="causeBreakdownTitle">Breakdown by cause</h2>
+        <div id="cause-breakdown" class="cause-breakdown"></div>
+      </section>
+
+      <footer><p data-i18n="disclaimer">This calculator assumes one winner receives the full 50% player prize pool for each game.</p></footer>
+    </section>
+  </main>
+
+  <template id="cause-row-template">
+    <div class="cause-row">
+      <div class="field cause-name-field">
+        <label data-i18n="causeNameLabel">Cause name</label>
+        <input class="cause-name" type="text" maxlength="100" placeholder="Local food bank" required />
+      </div>
+      <div class="field cause-games-field">
+        <label data-i18n="causeGamesLabel">Games for this cause</label>
+        <input class="cause-games" type="number" min="0" step="1" inputmode="numeric" value="0" required />
+      </div>
+      <button type="button" class="remove-cause" data-i18n-aria="removeCauseLabel" aria-label="Remove cause">×</button>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
